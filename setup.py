@@ -10,7 +10,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/launch', ['launch/test.launch.xml'])
+        ('share/' + package_name + '/launch', ['launch/test.launch.xml']),
+ 
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -21,7 +22,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'my_node = connect_the_bdots.my_node:main'
+            'my_node = connect_the_bdots.my_node:main',
+            'gui_prarob_node = connect_the_bdots.gui_plugin:main'
         ],
+         
     },
 )
