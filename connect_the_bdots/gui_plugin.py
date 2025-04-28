@@ -35,6 +35,14 @@ class RobotArm(Node):
 
         cv2.imshow('Robotic Arm', self.image)
         self.text = "Default algorithm is direct kinematics, to change it pres Ctr+P"
+        cv2.setTrackbarPos('x','Robotic Arm', 0)
+        cv2.setTrackbarPos('y','Robotic Arm', 76)
+        cv2.setTrackbarPos('z','Robotic Arm', 171)
+        cv2.setTrackbarPos('q1','Robotic Arm', 0)
+        cv2.setTrackbarPos('q2','Robotic Arm', -60)
+        cv2.setTrackbarPos('q3','Robotic Arm', 150)
+
+
         self.block_sliders()
 
 
@@ -53,12 +61,12 @@ class RobotArm(Node):
     def block_sliders(self):
         if (self.kin):
             cv2.setTrackbarPos('x','Robotic Arm', 0)
-            cv2.setTrackbarPos('y','Robotic Arm', 0)
-            cv2.setTrackbarPos('z','Robotic Arm', 0)   
+            cv2.setTrackbarPos('y','Robotic Arm', 76)
+            cv2.setTrackbarPos('z','Robotic Arm', 171)   
         else:
             cv2.setTrackbarPos('q1','Robotic Arm', 0)
-            cv2.setTrackbarPos('q2','Robotic Arm', 0)
-            cv2.setTrackbarPos('q3','Robotic Arm', 0)
+            cv2.setTrackbarPos('q2','Robotic Arm', -60)
+            cv2.setTrackbarPos('q3','Robotic Arm', 150)
 
 
     def slider_change(self, pos=None):
@@ -66,16 +74,29 @@ class RobotArm(Node):
         
 
     def autoMode(self,state, userdata=None):
-        pass
+        p = 10
+        connect_arr = [(100,300,10,10), (300,100,20,20)]
+        avoid_arr = [(200,200,20+p,20+p)]
+        img = np.ones((350,350))
+        for object in connect_arr:
+            img[object[0]:object[0]+object[2],object[1]:object[1]+object[3]] = 0
+        for object in avoid_arr:
+            img[object[0]:object[0]+object[2],object[1]:object[1]+object[3]] = 0
+        
+        d = 150
+        x = 350-d
+        y = int((350-d)/2)
+        img[x:x+d, y:y+d] = 0
+        return
 
 
     def startPosition (self, state, userdata=None):
         cv2.setTrackbarPos('x','Robotic Arm', 0)
-        cv2.setTrackbarPos('y','Robotic Arm', 0)
-        cv2.setTrackbarPos('z','Robotic Arm', 0)
+        cv2.setTrackbarPos('y','Robotic Arm', 76)
+        cv2.setTrackbarPos('z','Robotic Arm', 171)
         cv2.setTrackbarPos('q1','Robotic Arm', 0)
-        cv2.setTrackbarPos('q2','Robotic Arm', 0)
-        cv2.setTrackbarPos('q3','Robotic Arm', 0)
+        cv2.setTrackbarPos('q2','Robotic Arm', -60)
+        cv2.setTrackbarPos('q3','Robotic Arm', 150)
 
 
     def timer_callback(self):
