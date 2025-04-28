@@ -8,7 +8,9 @@ import numpy as np
 class RobotArm(Node):
     def __init__(self):
         super().__init__('my_python_node')
-        self.image = cv2.imread("roboticArm.png")
+        self.declare_parameter('image_file', 'roboticArm.png')
+        file_loc = self.get_parameter('image_file').get_parameter_value().string_value
+        self.image = cv2.imread(file_loc)
         self.kin = 1 # 1=direct 0=inverse
         self.image = cv2.resize(self.image, (0, 0), fx=0.9, fy=0.9)
         self.timer = self.create_timer(0.1, self.timer_callback)
@@ -16,7 +18,8 @@ class RobotArm(Node):
         
         cv2.createButton('Direct kinematics', self.on_check_d, None, cv2.QT_RADIOBOX, 1)
         cv2.createButton('Inverse kinematics', self.on_check_i, None, cv2.QT_RADIOBOX, 0)
-
+        cv2.createButton('Start position', self.startPosition, None, cv2.QT_PUSH_BUTTON,1)
+        cv2.createButton('Autonomous mode', self.autoMode, None, cv2.QT_PUSH_BUTTON,1)
 
         cv2.createTrackbar('q1','Robotic Arm',0,135,self.slider_change)
         cv2.setTrackbarMin('q1', 'Robotic Arm', -135)
@@ -59,17 +62,20 @@ class RobotArm(Node):
 
 
     def slider_change(self, pos=None):
+        pass
         
-        if self.kin:
-            q1 = cv2.getTrackbarPos('q1','Robotic Arm')
-            q2 = cv2.getTrackbarPos('q2','Robotic Arm')
-            q3 = cv2.getTrackbarPos('q3','Robotic Arm')
-            self.text = "Direct kinematics for (q1 = "+ str(q1) + ", q2 = " + str(q2) + ", q3 = " + str(q3) + ")"   
-        else:
-            x = cv2.getTrackbarPos('x','Robotic Arm')
-            y = cv2.getTrackbarPos('y','Robotic Arm')
-            z = cv2.getTrackbarPos('z','Robotic Arm')
-            self.text = "Inverse kinematics for (x = "+ str(x) + ", y = " + str(y) + ", z = " + str(z) + ")"
+
+    def autoMode(self,state, userdata=None):
+        pass
+
+
+    def startPosition (self, state, userdata=None):
+        cv2.setTrackbarPos('x','Robotic Arm', 0)
+        cv2.setTrackbarPos('y','Robotic Arm', 0)
+        cv2.setTrackbarPos('z','Robotic Arm', 0)
+        cv2.setTrackbarPos('q1','Robotic Arm', 0)
+        cv2.setTrackbarPos('q2','Robotic Arm', 0)
+        cv2.setTrackbarPos('q3','Robotic Arm', 0)
 
 
     def timer_callback(self):
@@ -93,8 +99,28 @@ class RobotArm(Node):
 
         cv2.imshow('Robotic Arm', extended_image)
 
+        if self.kin:
+            q1 = cv2.getTrackbarPos('q1','Robotic Arm')
+            q2 = cv2.getTrackbarPos('q2','Robotic Arm')
+            q3 = cv2.getTrackbarPos('q3','Robotic Arm')
+            x,y,z = direct_kinematics(q1,q2,q3)
+            self.text = "Direct kinematics for (q1 = "+ str(q1) + ", q2 = " + str(q2) + ", q3 = " + str(q3) + ") : (x,y,z) = (" + str(x) + "," + str(y) + "," + str(z) + ")" 
+        else:
+            x = cv2.getTrackbarPos('x','Robotic Arm')
+            y = cv2.getTrackbarPos('y','Robotic Arm')
+            z = cv2.getTrackbarPos('z','Robotic Arm')
+            q1,q2,q3 = inverse_kinematics(x,y,z)
+            self.text = "Inverse kinematics for (x = "+ str(x) + ", y = " + str(y) + ", z = " + str(z) + ") : (q1,q2,q3) = (" + str(q1) + "," + str(q2) + "," + str(q3) + ")" 
+
         self.block_sliders()
         cv2.waitKey(1)  
+
+def direct_kinematics (q1,q2,q3):
+    return 0,0,0
+
+
+def inverse_kinematics (x,y,z):
+    return 0,0,0
 
 
 def main(args=None):

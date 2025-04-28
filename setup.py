@@ -10,7 +10,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/launch', ['launch/test.launch.xml']),
+        ('share/' + package_name + '/launch', ['launch/gui.launch.xml']),
  
     ],
     install_requires=['setuptools'],
