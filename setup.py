@@ -11,6 +11,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch', ['launch/gui.launch.xml']),
+        ('share/' + package_name + '/images', ['images/roboticArm.png'])
  
     ],
     install_requires=['setuptools'],

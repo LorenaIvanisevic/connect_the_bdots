@@ -1,5 +1,5 @@
 <launch>
-    <arg name="image_location" default="$(find-pkg-share connect_the_bdots)/launch/roboticArm.png" />
+    <arg name="image_location" default="$(find-pkg-share connect_the_bdots)/images/roboticArm.png" />
     
     <node name="simulation" pkg="connect_the_bdots" exec="gui_prarob_node" output="screen">
     	<param name="image_file" value="$(var image_location)" />
