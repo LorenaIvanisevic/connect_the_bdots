@@ -1,4 +1,5 @@
 from setuptools import find_packages, setup
+from glob import glob
 
 package_name = 'connect_the_bdots'
 
@@ -10,8 +11,11 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/launch', ['launch/gui.launch.xml']),
-        ('share/' + package_name + '/images', ['images/roboticArm.png'])
+        ('share/' + package_name + '/launch', ['launch/gui.launch.xml', 'launch/prarob_manipulator.launch.py', 'launch/prarob_manipulator.rviz']),
+        ('share/' + package_name + '/images', ['images/roboticArm.png']),
+        ('share/' + package_name + '/urdf', glob("urdf/*")),
+        ('share/' + package_name + '/meshes', glob("meshes/*")),
+        ('share/' + package_name + '/scripts', ['scripts/move_robot.py']),
  
     ],
     install_requires=['setuptools'],

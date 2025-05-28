@@ -24,7 +24,7 @@ import xacro
 
 def generate_launch_description():
     robot_name = "prarob_manipulator"
-    package_name = "ros2_prarob"
+    package_name = "connect_the_bdots"
     print("################",get_package_share_directory(
         package_name))
     rviz_config = os.path.join(get_package_share_directory(
