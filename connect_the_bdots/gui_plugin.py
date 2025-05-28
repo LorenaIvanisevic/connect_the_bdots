@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 import cv2
 import numpy as np
-
+import math
 
 
 class RobotArm(Node):
@@ -137,11 +137,32 @@ class RobotArm(Node):
         cv2.waitKey(1)  
 
 def direct_kinematics (q1,q2,q3):
-    return 0,0,0
+    a1 = 82
+    a2 = 178
+    a3 = 230
+    q1 = math.radians(q1)
+    q2 = math.radians(q2)
+    q3 = math.radians(q3)
+    
+    x = -math.sin(q1) * (a3*math.sin(q2+q3)+ a2*math.sin(q2))
+    y = math.cos(q1) * (a3*math.sin(q2+q3) + a2*math.sin(q2))
+    z = a1 + a3*math.cos(q2+q3) + a2*math.cos(q2)
+    return round(x,2),round(y,2),round(z,2)
 
 
 def inverse_kinematics (x,y,z):
-    return 0,0,0
+    a1 = 82
+    a2 = 178
+    a3 = 230
+    print(x,y,z)
+    try:
+        q1 = 57.2958 * math.atan2(x,y)
+        q2 = 90.0000-57.2958*math.acos((0.5000*(a2**2 - a3**2 + x**2 + y**2 + (a1-z)**2))/(a2*(x**2+y**2+(a1-z)**2)**0.5000)) - 57.2958*math.atan2(1*z-1*a1,(x**2+y**2)**(1/2))
+        q3 = 57.2958*math.acos((0.5000*(x**2-a3**2 - a2**2 + y**2 + (a1-z)**2))/(a2*a3))
+    except ValueError:
+        print("position not posible")
+        return "err","err","err"
+    return q1,q2,q3
 
 
 def main(args=None):
