@@ -5,7 +5,7 @@
   <joint name="origin_to_link1" type="fixed">
     <xacro:insert_block name="origin" />
     <parent link="${parent}" />
-    <child link="link1" />
+    <child link="base" />
     <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
     <axis xyz="0 0 1" />
   </joint>
@@ -28,106 +28,199 @@
     </collision>
   </link-->
 
-<!-- Link 1 - stl -->
-  <link name="link1">
+<!-- Link 1 - base -->
+  <link name="base">
     <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://connect_the_bdots/meshes/SeminarBase.step" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://connect_the_bdots/meshes/SeminarBase.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="">
         <color rgba="0.054901960784313725 0.054901960784313725 0.06274509803921569 1.0"/>
       </material>
     </visual>
     <collision>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://connect_the_bdots/meshes/SeminarBase.step" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://connect_the_bdots/meshes/SeminarBase.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
 
   </link>
 
-  <!-- Joint 1 -->
-  <joint name="joint1" type="revolute">
-    <parent link="link1"/>
-    <child link="link2"/>
-    <origin xyz="0.0 0.0 1.0" rpy="0 0 0"/>
+  <!-- Joint base -->
+  <joint name="base_to_link_90" type="revolute">
+    <parent link="base"/>
+    <child link="link_90"/>
+    <origin xyz="0.0 0.0 0.04" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit velocity="10.0" effort="1" lower="0" upper="2.82743338823" />
+  </joint>
+
+
+
+  <!-- Link 2 - link 90-->
+  <link name="link_90">
+     <visual>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://connect_the_bdots/meshes/SeminarLink90.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.054901960784313725 0.054901960784313725 0.06274509803921569 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://connect_the_bdots/meshes/SeminarLink90.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+ <!-- Joint base -> xl -->
+  <joint name="link_90_to_xl" type="fixed">
+    <parent link="link_90"/>
+    <child link="motor1"/>
+    <origin xyz="0.0 0.0 0.030" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
     <limit velocity="10.0" effort="1" lower="-2.82743338823" upper="2.82743338823" />
   </joint>
 
-  <!-- Link 2 -->
-  <link name="link2">
-    <visual>
-      <origin xyz="0 0 0.3" rpy="0 0 0"/>
+  <!-- Motor 1-->
+  <link name="motor1">
+     <visual>
+      <origin rpy="1.57075 0 0" xyz="0 0 0.01"/>
       <geometry>
-        <box size="0.05 0.05 0.6"/>
+        <mesh filename="package://connect_the_bdots/meshes/SeminarXL-430_new.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <color rgba="0 0.8 0.0 1"/>
+      <material name="">
+        <color rgba="0.054901960784313725 0.054901960784313725 0.06274509803921569 1.0"/>
+      </material>
     </visual>
-
     <collision>
-      <origin xyz="0 0 0.3" rpy="0 0 0"/>
+      <origin rpy="1.57075 0 0" xyz="0 0 0.01"/>
       <geometry>
-        <box size="0.05 0.05 0.6"/>
+        <mesh filename="package://connect_the_bdots/meshes/SeminarXL-430_new.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
 
-  <!-- Joint 2 -->
-  <joint name="joint2" type="revolute">
+
+  <!-- Joint -->
+  <joint name="xl_to_link_RR" type="revolute">
+    <parent link="motor1"/>
+    <child link="link_RR"/>
+    <origin xyz="0.0 0.001 0.005" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit velocity="10.0" effort="1" lower="-2.82743338823" upper="2.82743338823" />
+  </joint>
+
+  <!-- Link 3 - link RR-->
+  <link name="link_RR">
+       <visual>
+      <origin rpy="1.57075 0 1.57075" xyz="0.0 0.017 0.005 "/>
+      <geometry>
+        <mesh filename="package://connect_the_bdots/meshes/SeminarLinkRR.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.054901960784313725 0.054901960784313725 0.06274509803921569 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="1.57075 0 0" xyz="0.0 0.017 0.005"/>
+      <geometry>
+        <mesh filename="package://connect_the_bdots/meshes/SeminarLinkRR.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+   <!-- Joint -->
+  <joint name="link_RR_to_xl" type="revolute">
+    <parent link="link_RR"/>
+    <child link="motor2"/>
+    <origin xyz="-0.18 0.0 0.0" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit velocity="10.0" effort="1" lower="-2.82743338823" upper="2.82743338823" />
+  </joint>
+
+    <!-- Motor 2-->
+  <link name="motor2">
+     <visual>
+      <origin rpy="1.57075 0 0" xyz="0 0 0.0"/>
+      <geometry>
+        <mesh filename="package://connect_the_bdots/meshes/SeminarXL-430_new.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.054901960784313725 0.054901960784313725 0.06274509803921569 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="1.57075 0 1.57075" xyz="0 0 0.01"/>
+      <geometry>
+        <mesh filename="package://connect_the_bdots/meshes/SeminarXL-430_new.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+    <!-- Joint 5 -->
+  <!-- <joint name="xl_to_" type="fixed">
     <parent link="link2"/>
     <child link="link3"/>
-    <origin xyz="0.0 0.0 0.60" rpy="0 0 0"/>
+    <origin xyz="0.0 0.0 0.02" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
     <limit velocity="10.0" effort="1" lower="-2.82743338823" upper="2.82743338823" />
-  </joint>
+  </joint> -->
 
-  <!-- Link 3 -->
-  <link name="link3">
-    <visual>
-      <origin xyz="0.15 0 0" rpy="0 0 0"/>
+
+  <!-- Link 4 - link marker-->
+  <!-- <link name="link3">
+       <visual>
+      <origin rpy="1.57075 0 0" xyz="0.02 0 0.03"/>
       <geometry>
-        <box size="0.3 0.05 0.05"/>
+        <mesh filename="package://connect_the_bdots/meshes/SeminarLinkMarker.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <color rgba="0 0 0.8 1"/>
+      <material name="">
+        <color rgba="0.054901960784313725 0.054901960784313725 0.06274509803921569 1.0"/>
+      </material>
     </visual>
-
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin rpy="1.57075 0 0" xyz="0.02 0 0.03"/>
       <geometry>
-        <box size="0.3 0.05 0.05"/>
+        <mesh filename="package://connect_the_bdots/meshes/SeminarLinkMarker.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
-  </link>
+  </link> -->
 
-  <!-- Joint 2 -->
-  <joint name="joint3" type="revolute">
+
+
+  <!-- Joint 3 -->
+  <!-- <joint name="joint3" type="revolute">
     <parent link="link3"/>
     <child link="link_tool"/>
-    <origin xyz="0.3 0.0 0.0" rpy="0 0 0"/>
+    <origin xyz="0.0 0.0 1.0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
     <limit velocity="10.0" effort="1" lower="-2.82743338823" upper="2.82743338823" />
-  </joint>
+  </joint> -->
 
   <!-- link_tool -->
-  <link name="link_tool">
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+  <!-- <link name="link_tool">
+     <visual>
+      <origin rpy="1.57075 0 0" xyz="0 0 1"/>
       <geometry>
-        <box size="0.08 0.08 0.08"/>
+        <mesh filename="package://connect_the_bdots/meshes/SeminarLinkMarker.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <color rgba="0 0 0.8 1"/>
+      <material name="">
+        <color rgba="0.054901960784313725 0.054901960784313725 0.06274509803921569 1.0"/>
+      </material>
     </visual>
-
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
       <geometry>
-        <box size="0.08 0.08 0.08"/>
+        <mesh filename="package://connect_the_bdots/meshes/SeminarLinkMarker.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
-  </link>
+  </link> -->
 
 
 </xacro:macro>

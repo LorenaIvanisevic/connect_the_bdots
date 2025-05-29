@@ -76,6 +76,13 @@ def generate_launch_description():
                 {"robot_description": robot_description_config.toxml()}],
             output="screen",
         ),
+        
+         Node(
+            package="joint_state_publisher_gui",
+            executable="joint_state_publisher_gui",
+            name="joint_state_publisher_gui",
+            output="screen"
+        ),
 
         Node(
             package="rviz2",
@@ -83,6 +90,6 @@ def generate_launch_description():
             name="rviz2",
             arguments=["-d", rviz_config],
             output="screen",
-        )
+        ), 
 
     ])
