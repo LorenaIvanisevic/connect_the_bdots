@@ -104,19 +104,19 @@ class prarobClientNode(Node):
     ##########################################################################################
     # AUTONOMOUS MODE 
     def autoMode(self,state, userdata=None):
-        p = 10
-        connect_arr = [(100,300,10,10), (300,100,20,20)]
-        avoid_arr = [(200,200,20+p,20+p)]
-        img = np.ones((350,350))
-        for object in connect_arr:
-            img[object[0]:object[0]+object[2],object[1]:object[1]+object[3]] = 0
-        for object in avoid_arr:
-            img[object[0]:object[0]+object[2],object[1]:object[1]+object[3]] = 0
-        
-        d = 150
-        x = 350-d
-        y = int((350-d)/2)
-        img[x:x+d, y:y+d] = 0
+        connect_obj = []
+        avoid_obj = []
+        #YOLO: get all objects from picture
+        #TRANSFORM: transform coordinates of ob to robot frame
+        connect_arr = []
+        avoid_arr = []
+        for o in connect_obj:
+            connect_arr.append#YOLO output x,y,w,h
+        for o in avoid_arr:
+            avoid_arr.append#YOLO output x,y,w,h
+        #create costmap and plan the path
+        for p in path:
+            self.inverse_kinematics(p[0], p[1], p[2]) #send each point to robot 
         return
     #####################################################################################
     #  MOVE ROBOT TO START POSITION
@@ -173,7 +173,7 @@ class prarobClientNode(Node):
     def direct_kinematics (self, q1,q2,q3):
         a1 = 82
         a2 = 178
-        a3 = 230
+        a3 = 237 #230
         q1 = math.radians(q1)
         q2 = math.radians(q2)
         q3 = math.radians(q3)
@@ -190,7 +190,7 @@ class prarobClientNode(Node):
     def inverse_kinematics (self, x,y,z):
         a1 = 82
         a2 = 178
-        a3 = 230
+        a3 = 237 #230
         print(x,y,z)
         try:
             q1 = 57.2958 * math.atan2(x,y)
